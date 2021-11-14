@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -14,6 +15,12 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 public class GameController {
   @GetMapping("/game")
   public String game() {
+    return "game1.html";
+  }
+  @PostMapping("/game")
+  public String ishi(@RequestParam String ishi, ModelMap model) {
+    int Ishi = Integer.parseInt(ishi);
+    model.addAttribute("ishi", Ishi);
     return "game1.html";
   }
 }

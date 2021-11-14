@@ -6,11 +6,42 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>START</title>
+  <style>
+    #stage {
+      display: grid;
+      grid-template-columns: repeat(15, 45px);
+      /* 15列 幅45px */
+      grid-template-rows: repeat(15, 45px);
+      /* 15行 高さ45px */
+      grid-gap: 1px;
+      /* マス同士の隙間1px */
+    }
+
+    .cell {
+      background: whitesmoke;
+    }
+
+    .p1 {
+      background: blue;
+    }
+
+    .p2 {
+      background: red;
+    }
+  </style>
 </head>
 
 <body>
-  <h1>GAME</h1>
-
+  <h1 style="text-align: center">GAME</h1>
+  <div th:if="${ishi}">
+    位置：[[${ishi}]]
+  </div>
+  <form th:action="@{/game}" method="post" />
+  <div id='stage'>
+    <button type="submit" name="ishi" th:each="i : ${#numbers.sequence(1,225)}" th:value="${i}">
+      <div th:if="${ishi==i}" class="p1"><br><br></div>
+    </button>
+  </div>
 </body>
 
 </html>
