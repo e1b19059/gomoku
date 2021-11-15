@@ -19,10 +19,12 @@ public class AuthConfiguration extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 
-    //pass:123
-    auth.inMemoryAuthentication().withUser("player1").password("$2y$10$udVaDVMUguMKa0genkRzU.zQWlOiayLdw6/DCevIn74GP5eQ4aVuC").roles("USER");
+    // pass:123
+    auth.inMemoryAuthentication().withUser("player1")
+        .password("$2y$10$udVaDVMUguMKa0genkRzU.zQWlOiayLdw6/DCevIn74GP5eQ4aVuC").roles("USER");
 
-    auth.inMemoryAuthentication().withUser("player2").password("$2y$10$lNpRyvOLBEzWZ.T52CsJEu4yA4tWwMsKWDSLRW5Dihjm.kX02VeVC").roles("USER");
+    auth.inMemoryAuthentication().withUser("player2")
+        .password("$2y$10$lNpRyvOLBEzWZ.T52CsJEu4yA4tWwMsKWDSLRW5Dihjm.kX02VeVC").roles("USER");
 
     // $ sshrun htpasswd -nbBC 10 admin adm1n
     // htpasswdでBCryptエンコードを行った後の文字列をパスワードとして指定している．
@@ -47,7 +49,7 @@ public class AuthConfiguration extends WebSecurityConfigurerAdapter {
     // antMatchers()の他にanyRequest()と書くとあらゆるアクセス先を表現できる
     // authenticated()の代わりにpermitAll()と書くと認証処理が不要であることを示す
     http.authorizeRequests().antMatchers("/game/**").authenticated();
-    
+    http.authorizeRequests().antMatchers("/gomoku/**").authenticated();
 
     // Spring Securityの機能を利用してログアウト．ログアウト時は http://localhost:8000/ に戻る
     http.logout().logoutSuccessUrl("/");
