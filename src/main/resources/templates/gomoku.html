@@ -9,6 +9,14 @@
 <body>
   <h1>GOMOKU GAME</h1>
 
+  <!-- 確認用 後で消す
+  <div th:if="${count}">
+    <p th:each="c:${count}">
+      [[${c}]]
+    </p>
+  </div>
+-->
+
   <!-- 縦横の座標のみ渡す -->
   <!-- 自分のターンはリンクあり -->
   <div th:if="${turn == true}" class="square">
@@ -506,6 +514,7 @@
   .square {
     font-size: 18px;
   }
+
   a {
     text-decoration: none;
     color: #000000;

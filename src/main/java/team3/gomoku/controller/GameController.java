@@ -1,5 +1,7 @@
 package team3.gomoku.controller;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -22,7 +24,6 @@ public class GameController {
 
   @GetMapping("gomoku1")
   public String gomoku1(ModelMap model) {
-    gomokuBoard = new Board();// 今はここにあるけどマッチが成立したときに一方だけ行う
     model.addAttribute("board", this.gomokuBoard.getBoard());
     model.addAttribute("turn", true);// 非同期にするときに変更する
     return "gomoku.html";
@@ -32,9 +33,14 @@ public class GameController {
   public String gomoku2(@RequestParam int col, @RequestParam int row, ModelMap model) {
     // 非同期に変える
     // まだ交代交代にはなっていない
-    gomokuBoard.putStone(col, row);
+    int i = gomokuBoard.putStone(col, row);
+    if(i!=-1){
+      model.addAttribute("player",i);
+      return "result.html";
+    }
     model.addAttribute("board", this.gomokuBoard.getBoard());
-    model.addAttribute("turn", false);// 非同期にするときに変更する
+    //model.addAttribute("count", this.gomokuBoard.getCount());
+    model.addAttribute("turn", true);// 非同期にするときに変更する
     return "gomoku.html";
   }
 }
