@@ -9,6 +9,33 @@
 <body>
   <h1>GAME</h1>
   <a href="gomoku1">五目並べ</a>
+
+    <h2>アクティブな試合</h2>
+    <p th:if="${matchList}">
+    <div th:each="match:${matchList}">
+      <div th:if="${match.isActive == true}">
+        <tr>
+          <td>id:[[${match.id}]]</td>
+          <td>player1:[[${match.player1}]]</td>
+          <td>player2:[[${match.player2}]]</td>
+        </tr>
+      </div>
+    </div>
+    </p>
+
+    <h2>試合結果</h2>
+    <p th:if="${matchList}">
+    <div th:each="match:${matchList}">
+      <div th:if="${match.isActive == false}">
+        <tr>
+          <td>id:[[${match.id}]]</td>
+          <td>player1:[[${match.player1}]]</td>
+          <td>player2:[[${match.player2}]]</td>
+          <td>winner:[[${match.winner}]]</td>
+        </tr>
+      </div>
+    </div>
+    </p>
 </body>
 
 </html>
