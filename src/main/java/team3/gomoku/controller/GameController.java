@@ -1,5 +1,7 @@
 package team3.gomoku.controller;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -8,6 +10,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import team3.gomoku.model.Board;
 import team3.gomoku.model.Game;
+import team3.gomoku.model.Match;
+import team3.gomoku.model.MatchMapper;
+import team3.gomoku.model.PlayerMapper;
 
 @Controller
 public class GameController {
@@ -15,9 +20,17 @@ public class GameController {
   @Autowired
   Board gomokuBoard;
 
-  @GetMapping("/game")
-  public String game() {
+  @Autowired
+  PlayerMapper playerMapper;
 
+  @Autowired
+  MatchMapper matchMapper;
+
+  @GetMapping("/game")
+  public String game(ModelMap model) {
+    ArrayList<Match> matchList = matchMapper.selectAllMatch();
+
+    model.addAttribute("matchList", matchList);
     return "game1.html";
   }
 
