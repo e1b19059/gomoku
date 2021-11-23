@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import team3.gomoku.model.Board;
+import team3.gomoku.model.Game;
 
 @Controller
 public class GameController {
@@ -22,8 +23,9 @@ public class GameController {
 
   @GetMapping("gomoku1")
   public String gomoku1(ModelMap model) {
-    gomokuBoard = new Board();// 今はここにあるけどマッチが成立したときに一方だけ行う
+    //gomokuBoard = new Board();// 今はここにあるけどマッチが成立したときに一方だけ行う
     model.addAttribute("board", this.gomokuBoard.getBoard());
+    model.addAttribute("board_info",this.gomokuBoard.getBoardinfo());
     model.addAttribute("turn", true);// 非同期にするときに変更する
     return "gomoku.html";
   }
@@ -32,9 +34,22 @@ public class GameController {
   public String gomoku2(@RequestParam int col, @RequestParam int row, ModelMap model) {
     // 非同期に変える
     // まだ交代交代にはなっていない
+    Game game = new Game();
     gomokuBoard.putStone(col, row);
     model.addAttribute("board", this.gomokuBoard.getBoard());
-    model.addAttribute("turn", false);// 非同期にするときに変更する
+    model.addAttribute("board_info",this.gomokuBoard.getBoardinfo());
+    int flag = game.check(col,row,this.gomokuBoard.getBoardinfo(),-1,-1);
+    String winner=" ";
+    if(flag==1){
+      if(this.gomokuBoard.getBoardinfo()[col][row]==0){
+        winner = "黒の勝利";
+    }else{
+      winner = "白の勝利";
+    }
+  }
+    model.addAttribute("flag", flag);
+    model.addAttribute("winner", winner);
+    model.addAttribute("turn", true);// 非同期にするときに変更する
     return "gomoku.html";
   }
 }
