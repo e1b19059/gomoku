@@ -6,7 +6,7 @@
   <title>gomoku</title>
   <style>
     .square {
-      font-size: 25px;
+      font-size: 22px;
     }
 
     a {
@@ -27,10 +27,11 @@
       sse.onmessage = function (event) {
         console.log("sse.onmessage")
         var boards = JSON.parse(event.data);//JSONオブジェクトとしてparse
+        console.log(boards)
         var board_body = "";
         for (var i = 0; i < 15; i++) {
           for (var j = 0; j < 15; j++) {
-            if (boards.board_info[i][j] != -1) {
+            if (boards.boardinfo[i][j] != -1) {
               board_body += "<span class='text'>" + boards.board[i][j] + "</span>"
             } else {
               board_body += "<a href='/gomoku2?col=" + i + "&row=" + j + "'>" + boards.board[i][j] + "</a>"
@@ -53,7 +54,7 @@
   <p th:if="${flag}">[[${winner}]]</p>
   <div th:if="${turn == true}" class="square">
     <h2>あなたのターン</h2>
-    <tbody id="board">
+    <span id="board">
       <div th:each="i : ${#numbers.sequence(0,14)}">
         <span th:each="j : ${#numbers.sequence(0,14)}">
           <a href="/gomoku2" th:href="@{/gomoku2(col=${i},row=${j})}" th:text="${board[i][j]} "
@@ -61,7 +62,7 @@
           <span th:if="${board_info[i][j]!=-1}" th:text="${board[i][j]}" class="text"></span>
         </span>
       </div>
-    </tbody>
+    </span>
   </div>
 
   <!-- 相手のターンはリンクなし -->

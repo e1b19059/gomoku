@@ -23,9 +23,9 @@ public class AsyncGame {
     logger.info("start");
     while (true) {// 無限ループ
       try {
-        logger.info("send:"+this.board.getBoardinfo()[0][0]);
+        //logger.info("send:"+this.board.getBoardinfo()[0][0]);
         TimeUnit.SECONDS.sleep(1);// 1秒STOP
-        emitter.send(board);// ここでsendすると引数をブラウザにpushする
+        emitter.send(this.board);// ここでsendすると引数をブラウザにpushする
       } catch (Exception e) {
         // 例外の名前とメッセージだけ表示する
         logger.warn("Exception:" + e.getClass().getName() + ":" + e.getMessage());
