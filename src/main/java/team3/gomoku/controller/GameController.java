@@ -2,20 +2,28 @@ package team3.gomoku.controller;
 
 import java.util.ArrayList;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import team3.gomoku.model.Board;
 import team3.gomoku.model.Game;
 import team3.gomoku.model.Match;
 import team3.gomoku.model.MatchMapper;
 import team3.gomoku.model.PlayerMapper;
+import team3.gomoku.service.AsyncGame;
 
 @Controller
 public class GameController {
+  private final Logger logger = LoggerFactory.getLogger(GameController.class);
+
+  @Autowired
+  private AsyncGame ag;
 
   @Autowired
   Board gomokuBoard;
@@ -64,5 +72,12 @@ public class GameController {
     model.addAttribute("winner", winner);
     model.addAttribute("turn", true);// 非同期にするときに変更する
     return "gomoku.html";
+  }
+
+@GetMapping("gomoku2/load")
+public SseEmitter Load() {
+    final SseEmitter sseEmitter = new SseEmitter();
+    this.ag.putStone(sseEmitter);
+    return sseEmitter;
   }
 }
