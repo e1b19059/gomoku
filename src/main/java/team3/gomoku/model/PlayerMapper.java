@@ -10,4 +10,7 @@ public interface PlayerMapper {
 
   @Select("select * from players;")
   ArrayList<Player> selectAllPlayer();
+
+  @Select("select id from players where name = #{name};")
+  int selectByName(String name);
 }

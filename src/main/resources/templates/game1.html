@@ -8,64 +8,63 @@
 
 <body>
   <h1>GAME</h1>
-  <a href="gomoku1">五目並べ</a>
 
   <h2>プレイヤー</h2>
   <p th:if="${playerList}">
-    <table border="2">
+  <table border="2">
+    <tr>
+      <th>ID</th>
+      <th>プレイヤー名</th>
+    </tr>
+    <div th:each="player:${playerList}">
       <tr>
-        <th>ID</th>
-        <th>プレイヤー名</th>
+        <td>[[${player.id}]]</td>
+        <td><a th:href="@{/gomoku1(id=${player.id})}">[[${player.name}]]</a></td>
       </tr>
-      <div th:each="player:${playerList}">
-        <tr>
-          <td>[[${player.id}]]</td>
-          <td>[[${player.name}]]</td>
-        </tr>
-      </div>
-    </table>
+    </div>
+  </table>
   </p>
 
   <h2>アクティブな試合</h2>
-   <p th:if="${matchList}">
-    <table border="2">
-      <tr>
-        <th>ID</th>
-        <th>プレイヤー1</th>
-        <th>プレイヤー2</th>
-      </tr>
-      <div th:each="match:${matchList}">
-        <div th:if="${match.isActive == true}">
-          <tr>
-            <td>[[${match.id}]]</td>
-            <td>[[${match.player1}]]</td>
-            <td>[[${match.player2}]]</td>
-          </tr>
-        </div>
+  <p th:if="${matchList}">
+  <table border="2">
+    <tr>
+      <th>ID</th>
+      <th>プレイヤー1</th>
+      <th>プレイヤー2</th>
+    </tr>
+    <div th:each="match:${matchList}">
+      <div th:if="${match.isActive == true}">
+        <tr>
+          <td>[[${match.id}]]</td>
+          <td>[[${match.player1}]]</td>
+          <td>[[${match.player2}]]</td>
+        </tr>
       </div>
-    </table>
+    </div>
+  </table>
   </p>
 
   <h2>試合結果</h2>
   <p th:if="${matchList}">
-    <table border="2">
-      <tr>
-        <th>ID</th>
-        <th>プレイヤー1</th>
-        <th>プレイヤー2</th>
-        <th>勝ち</th>
-      </tr>
-      <div th:each="match:${matchList}">
-        <div th:if="${match.isActive == false}">
-          <tr>
-            <td>[[${match.id}]]</td>
-            <td>[[${match.player1}]]</td>
-            <td>[[${match.player2}]]</td>
-            <td>[[${match.winner}]]</td>
-          </tr>
-        </div>
+  <table border="2">
+    <tr>
+      <th>ID</th>
+      <th>プレイヤー1</th>
+      <th>プレイヤー2</th>
+      <th>勝ち</th>
+    </tr>
+    <div th:each="match:${matchList}">
+      <div th:if="${match.isActive == false}">
+        <tr>
+          <td>[[${match.id}]]</td>
+          <td>[[${match.player1}]]</td>
+          <td>[[${match.player2}]]</td>
+          <td>[[${match.winner}]]</td>
+        </tr>
       </div>
-    </table>
+    </div>
+  </table>
   </p>
 
 </body>
