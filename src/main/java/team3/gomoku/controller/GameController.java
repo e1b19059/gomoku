@@ -50,9 +50,23 @@ public class GameController {
   public String gomoku1(ModelMap model, @RequestParam int id, Principal prin) {
     // gomokuBoard = new Board();// 今はここにあるけどマッチが成立したときに一方だけ行う
     Match match = new Match();
-    match.setPlayer1(playerMapper.selectByName(prin.getName()));
+    int myid = playerMapper.selectByName(prin.getName());
+    match.setPlayer1(myid);
     match.setPlayer2(id);
-    matchMapper.insertMatch(match);
+    ArrayList<Integer> player2 = matchMapper.selectByActive(true);
+    boolean flag = false;
+    for(int player : player2){
+      if(player==myid){
+        flag = true;
+        break;
+      }
+
+    }
+    if (!flag){
+      matchMapper.insertMatch(match);
+    }
+
+
 
     model.addAttribute("board", this.gomokuBoard.getBoard());
     model.addAttribute("board_info", this.gomokuBoard.getBoardinfo());
