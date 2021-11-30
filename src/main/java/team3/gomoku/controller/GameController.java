@@ -15,6 +15,7 @@ import team3.gomoku.model.Board;
 import team3.gomoku.model.Game;
 import team3.gomoku.model.Match;
 import team3.gomoku.model.MatchMapper;
+import team3.gomoku.model.Player;
 import team3.gomoku.model.PlayerMapper;
 import team3.gomoku.service.AsyncGame;
 
@@ -37,8 +38,10 @@ public class GameController {
   @GetMapping("/game")
   public String game(ModelMap model) {
     ArrayList<Match> matchList = matchMapper.selectAllMatch();
+    ArrayList<Player> playerList = playerMapper.selectAllPlayer();
 
     model.addAttribute("matchList", matchList);
+    model.addAttribute("playerList", playerList);
     return "game1.html";
   }
 
