@@ -1,5 +1,6 @@
 package team3.gomoku.controller;
 
+import java.security.Principal;
 import java.util.ArrayList;
 
 import org.slf4j.Logger;
@@ -46,10 +47,15 @@ public class GameController {
   }
 
   @GetMapping("gomoku1")
-  public String gomoku1(ModelMap model) {
-    //gomokuBoard = new Board();// 今はここにあるけどマッチが成立したときに一方だけ行う
+  public String gomoku1(ModelMap model, @RequestParam int id, Principal prin) {
+    // gomokuBoard = new Board();// 今はここにあるけどマッチが成立したときに一方だけ行う
+    Match match = new Match();
+    match.setPlayer1(playerMapper.selectByName(prin.getName()));
+    match.setPlayer2(id);
+    matchMapper.insertMatch(match);
+
     model.addAttribute("board", this.gomokuBoard.getBoard());
-    model.addAttribute("board_info",this.gomokuBoard.getBoardinfo());
+    model.addAttribute("board_info", this.gomokuBoard.getBoardinfo());
     model.addAttribute("turn", true);// 非同期にするときに変更する
     return "gomoku.html";
   }
@@ -61,24 +67,24 @@ public class GameController {
     Game game = new Game();
     gomokuBoard.putStone(col, row);
     model.addAttribute("board", this.gomokuBoard.getBoard());
-    model.addAttribute("board_info",this.gomokuBoard.getBoardinfo());
-    int flag = game.check(col,row,this.gomokuBoard.getBoardinfo(),-1,-1);
-    String winner=" ";
-    if(flag==1){
-      if(this.gomokuBoard.getBoardinfo()[col][row]==0){
+    model.addAttribute("board_info", this.gomokuBoard.getBoardinfo());
+    int flag = game.check(col, row, this.gomokuBoard.getBoardinfo(), -1, -1);
+    String winner = " ";
+    if (flag == 1) {
+      if (this.gomokuBoard.getBoardinfo()[col][row] == 0) {
         winner = "黒の勝利";
-    }else{
-      winner = "白の勝利";
+      } else {
+        winner = "白の勝利";
+      }
     }
-  }
     model.addAttribute("flag", flag);
     model.addAttribute("winner", winner);
     model.addAttribute("turn", true);// 非同期にするときに変更する
     return "gomoku.html";
   }
 
-@GetMapping("gomoku2/load")
-public SseEmitter Load() {
+  @GetMapping("gomoku2/load")
+  public SseEmitter Load() {
     final SseEmitter sseEmitter = new SseEmitter();
     this.ag.putStone(sseEmitter);
     return sseEmitter;
