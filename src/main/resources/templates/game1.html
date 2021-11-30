@@ -10,32 +10,64 @@
   <h1>GAME</h1>
   <a href="gomoku1">五目並べ</a>
 
-    <h2>アクティブな試合</h2>
-    <p th:if="${matchList}">
-    <div th:each="match:${matchList}">
-      <div th:if="${match.isActive == true}">
+  <h2>プレイヤー</h2>
+  <p th:if="${playerList}">
+    <table border="2">
+      <tr>
+        <th>ID</th>
+        <th>プレイヤー名</th>
+      </tr>
+      <div th:each="player:${playerList}">
         <tr>
-          <td>id:[[${match.id}]]</td>
-          <td>player1:[[${match.player1}]]</td>
-          <td>player2:[[${match.player2}]]</td>
+          <td>[[${player.id}]]</td>
+          <td>[[${player.name}]]</td>
         </tr>
       </div>
-    </div>
-    </p>
+    </table>
+  </p>
 
-    <h2>試合結果</h2>
-    <p th:if="${matchList}">
-    <div th:each="match:${matchList}">
-      <div th:if="${match.isActive == false}">
-        <tr>
-          <td>id:[[${match.id}]]</td>
-          <td>player1:[[${match.player1}]]</td>
-          <td>player2:[[${match.player2}]]</td>
-          <td>winner:[[${match.winner}]]</td>
-        </tr>
+  <h2>アクティブな試合</h2>
+   <p th:if="${matchList}">
+    <table border="2">
+      <tr>
+        <th>ID</th>
+        <th>プレイヤー1</th>
+        <th>プレイヤー2</th>
+      </tr>
+      <div th:each="match:${matchList}">
+        <div th:if="${match.isActive == true}">
+          <tr>
+            <td>[[${match.id}]]</td>
+            <td>[[${match.player1}]]</td>
+            <td>[[${match.player2}]]</td>
+          </tr>
+        </div>
       </div>
-    </div>
-    </p>
+    </table>
+  </p>
+
+  <h2>試合結果</h2>
+  <p th:if="${matchList}">
+    <table border="2">
+      <tr>
+        <th>ID</th>
+        <th>プレイヤー1</th>
+        <th>プレイヤー2</th>
+        <th>勝ち</th>
+      </tr>
+      <div th:each="match:${matchList}">
+        <div th:if="${match.isActive == false}">
+          <tr>
+            <td>[[${match.id}]]</td>
+            <td>[[${match.player1}]]</td>
+            <td>[[${match.player2}]]</td>
+            <td>[[${match.winner}]]</td>
+          </tr>
+        </div>
+      </div>
+    </table>
+  </p>
+
 </body>
 
 </html>
