@@ -60,29 +60,39 @@ public class GameController {
         flag = true;
         break;
       }
-
     }
     if (!flag){
       matchMapper.insertMatch(match);
     }
-
-
-
     model.addAttribute("board", this.gomokuBoard.getBoard());
     model.addAttribute("board_info", this.gomokuBoard.getBoardinfo());
-    model.addAttribute("turn", true);// 非同期にするときに変更する
+    ArrayList<Match> activeMatchs = matchMapper.selectActiveMatch();
+    //一個目しかとり出さない
+    boolean turn = false;
+    for(Match acmatch : activeMatchs){
+      if(acmatch.getPlayer1()==myid){
+        turn = true;
+        break;
+      }
+      else{
+        turn = false;
+        break;
+      }
+    }
+     //playerテーブルのturnを update
+      playerMapper.updateById(myid, turn);
+      model.addAttribute("turn", turn);
     return "gomoku.html";
   }
 
   @GetMapping("gomoku2")
-  public String gomoku2(@RequestParam int col, @RequestParam int row, ModelMap model) {
-    // 非同期に変える
-    // まだ交代交代にはなっていない
+  public String gomoku2(@RequestParam int col, @RequestParam int row, ModelMap model, Principal prin) {
     Game game = new Game();
     gomokuBoard.putStone(col, row);
     model.addAttribute("board", this.gomokuBoard.getBoard());
     model.addAttribute("board_info", this.gomokuBoard.getBoardinfo());
     int flag = game.check(col, row, this.gomokuBoard.getBoardinfo(), -1, -1);
+    int myid = playerMapper.selectByName(prin.getName());
     String winner = " ";
     if (flag == 1) {
       if (this.gomokuBoard.getBoardinfo()[col][row] == 0) {
@@ -93,7 +103,22 @@ public class GameController {
     }
     model.addAttribute("flag", flag);
     model.addAttribute("winner", winner);
-    model.addAttribute("turn", true);// 非同期にするときに変更する
+    //player tableのturnを更新
+    int yourid=0;
+    ArrayList<Match> activeMatchs = matchMapper.selectActiveMatch();
+    for(Match acmatch : activeMatchs){
+      if(acmatch.getPlayer1()==myid){
+        yourid = acmatch.getPlayer2();
+        break;
+      }
+      else{
+        yourid = acmatch.getPlayer1();
+        break;
+      }
+    }
+    playerMapper.updateById(myid, false);
+    playerMapper.updateById(yourid, true);
+    model.addAttribute("turn", false);
     return "gomoku.html";
   }
 
@@ -101,6 +126,14 @@ public class GameController {
   public SseEmitter Load() {
     final SseEmitter sseEmitter = new SseEmitter();
     this.ag.putStone(sseEmitter);
+    return sseEmitter;
+  }
+
+   @GetMapping("gomoku2/turn")
+  public SseEmitter Turn(Principal prin) {
+    int myid = playerMapper.selectByName(prin.getName());
+    final SseEmitter sseEmitter = new SseEmitter();
+    this.ag.turn(sseEmitter, myid);
     return sseEmitter;
   }
 }

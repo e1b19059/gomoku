@@ -1,6 +1,7 @@
 CREATE TABLE players (
     id IDENTITY,
-    name CHAR NOT NULL
+    name CHAR NOT NULL,
+    turn boolean
 );
 CREATE TABLE matches (
     id IDENTITY,

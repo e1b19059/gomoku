@@ -10,6 +10,9 @@ import org.apache.ibatis.annotations.Options;
 @Mapper
 public interface MatchMapper {
 
+  @Select("select * from matches where isActive=true;")
+  ArrayList<Match> selectActiveMatch();
+
   @Select("select * from matches;")
   ArrayList<Match> selectAllMatch();
 
