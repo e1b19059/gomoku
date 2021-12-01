@@ -3,6 +3,15 @@ package team3.gomoku.model;
 public class Player {
   int id;
   String name;
+  boolean turn;
+
+  public boolean getTurn() {
+    return turn;
+  }
+
+  public void setTurn(boolean turn) {
+    this.turn = turn;
+  }
 
   public int getId() {
     return id;
