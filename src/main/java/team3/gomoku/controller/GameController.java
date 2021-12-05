@@ -65,7 +65,7 @@ public class GameController {
       matchMapper.insertMatch(match);
       // flagがtureでないなら先行なのでボードを初期化
       gomokuBoard.initBoard();
-      gomokuBoard.initBoard();
+      gomokuBoard.initBoardInfo();
     }
     model.addAttribute("board", this.gomokuBoard.getBoard());
     model.addAttribute("board_info", this.gomokuBoard.getBoardinfo());
