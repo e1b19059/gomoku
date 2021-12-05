@@ -78,5 +78,9 @@ public class Board {
     // 並んでいるか確認するメソッド
   }
 
-  // 同じ色の石が5個そろっているか確認するメソッド作る
+  public void initAll() {
+    flag = 0;
+    this.board = initBoard();
+    this.board_info = initBoardinfo();
+  }
 }
