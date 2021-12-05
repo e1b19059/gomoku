@@ -2,10 +2,11 @@ package team3.gomoku.model;
 
 import java.util.ArrayList;
 
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 @Mapper
 public interface MatchMapper {
@@ -23,4 +24,6 @@ public interface MatchMapper {
   @Options(useGeneratedKeys = true, keyColumn = "id", keyProperty = "id")
   void insertMatch(Match match);
 
+  @Update("UPDATE matches SET isActive = false WHERE ID = #{id}")
+  void updateEndById(int id);
 }

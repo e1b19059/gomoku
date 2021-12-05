@@ -63,13 +63,16 @@ public class GameController {
     }
     if (!flag){
       matchMapper.insertMatch(match);
+    } else {
+      // flagがtureなら先行なのでボードを初期化
+      gomokuBoard.initBoard();
     }
     model.addAttribute("board", this.gomokuBoard.getBoard());
     model.addAttribute("board_info", this.gomokuBoard.getBoardinfo());
-    ArrayList<Match> activeMatchs = matchMapper.selectActiveMatch();
+    ArrayList<Match> activeMatches = matchMapper.selectActiveMatch();
     //一個目しかとり出さない
     boolean turn = false;
-    for(Match acmatch : activeMatchs){
+    for(Match acmatch : activeMatches){
       if(acmatch.getPlayer1()==myid){
         turn = true;
         break;
@@ -94,30 +97,41 @@ public class GameController {
     int flag = game.check(col, row, this.gomokuBoard.getBoardinfo(), -1, -1);
     int myid = playerMapper.selectByName(prin.getName());
     String winner = " ";
+
+
+    //player tableのturnを更新
+    int yourid = 0;
+    int num = 0;// リストの何番目か数える
+    ArrayList<Match> activeMatches = matchMapper.selectActiveMatch();
+    for (Match acmatch : activeMatches) {
+      num++;
+      if (acmatch.getPlayer1() == myid) {
+        yourid = acmatch.getPlayer2();
+        break;
+      } else {
+        yourid = acmatch.getPlayer1();
+        break;
+      }
+    }
+
     if (flag == 1) {
       if (this.gomokuBoard.getBoardinfo()[col][row] == 0) {
         winner = "黒の勝利";
       } else {
         winner = "白の勝利";
       }
+      model.addAttribute("flag", flag);
+      model.addAttribute("winner", winner);
+      // 試合が終わったので、ターンの更新
+      playerMapper.updateById(myid, false);
+      playerMapper.updateById(yourid, false);
+      // matchesテーブルの更新
+      matchMapper.updateEndById(activeMatches.get(num - 1).getId());// リストの要素は0からなのでnumから1引く
+    } else {
+      // 試合が続いているので、ターンの更新
+      playerMapper.updateById(myid, false);
+      playerMapper.updateById(yourid, true);
     }
-    model.addAttribute("flag", flag);
-    model.addAttribute("winner", winner);
-    //player tableのturnを更新
-    int yourid=0;
-    ArrayList<Match> activeMatchs = matchMapper.selectActiveMatch();
-    for(Match acmatch : activeMatchs){
-      if(acmatch.getPlayer1()==myid){
-        yourid = acmatch.getPlayer2();
-        break;
-      }
-      else{
-        yourid = acmatch.getPlayer1();
-        break;
-      }
-    }
-    playerMapper.updateById(myid, false);
-    playerMapper.updateById(yourid, true);
     model.addAttribute("turn", false);
     return "gomoku.html";
   }
