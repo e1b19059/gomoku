@@ -63,8 +63,8 @@ public class GameController {
     }
     if (!flag){
       matchMapper.insertMatch(match);
-    } else {
-      // flagがtureなら先行なのでボードを初期化
+      // flagがtureでないなら先行なのでボードを初期化
+      gomokuBoard.initBoard();
       gomokuBoard.initBoard();
     }
     model.addAttribute("board", this.gomokuBoard.getBoard());
