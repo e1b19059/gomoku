@@ -37,18 +37,20 @@ public class GameController {
   MatchMapper matchMapper;
 
   @GetMapping("/game")
-  public String game(ModelMap model) {
+  public String game(ModelMap model, Principal prin) {
     ArrayList<Match> matchList = matchMapper.selectAllMatch();
     ArrayList<Player> playerList = playerMapper.selectAllPlayer();
+    int myid = playerMapper.selectByName(prin.getName());
 
     model.addAttribute("matchList", matchList);
     model.addAttribute("playerList", playerList);
+    model.addAttribute("myid",myid);
+    model.addAttribute("playername",prin.getName());
     return "game1.html";
   }
 
   @GetMapping("gomoku1")
   public String gomoku1(ModelMap model, @RequestParam int id, Principal prin) {
-    // gomokuBoard = new Board();// 今はここにあるけどマッチが成立したときに一方だけ行う
     Match match = new Match();
     int myid = playerMapper.selectByName(prin.getName());
     match.setPlayer1(myid);
