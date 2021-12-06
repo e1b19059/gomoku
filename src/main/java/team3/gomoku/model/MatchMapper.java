@@ -24,6 +24,6 @@ public interface MatchMapper {
   @Options(useGeneratedKeys = true, keyColumn = "id", keyProperty = "id")
   void insertMatch(Match match);
 
-  @Update("UPDATE matches SET isActive = false WHERE ID = #{id}")
-  void updateEndById(int id);
+  @Update("UPDATE matches SET isActive = false, winner = #{winner} WHERE ID = #{id}")
+  void updateEndById(int id, int winner);
 }

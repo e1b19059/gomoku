@@ -20,4 +20,6 @@ public interface PlayerMapper {
 
   @Update("UPDATE players SET turn = #{turn} WHERE ID = #{id}")
   void updateById(int id, boolean turn);
+  @Update("UPDATE players SET turn = null WHERE ID = #{id}")
+  void updatetonull(int id);
 }
