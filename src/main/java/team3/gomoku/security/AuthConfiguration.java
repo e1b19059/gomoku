@@ -9,6 +9,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import org.springframework.security.core.session.SessionRegistryImpl;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.web.session.HttpSessionEventPublisher;
+
 @Configuration
 @EnableWebSecurity
 public class AuthConfiguration extends WebSecurityConfigurerAdapter {
@@ -26,7 +30,7 @@ public class AuthConfiguration extends WebSecurityConfigurerAdapter {
     auth.inMemoryAuthentication().withUser("player2")
         .password("$2y$10$lNpRyvOLBEzWZ.T52CsJEu4yA4tWwMsKWDSLRW5Dihjm.kX02VeVC").roles("USER");
 
-    auth.inMemoryAuthentication().withUser("player3").password(passwordEncoder().encode("123")).roles("USER");
+    //auth.inMemoryAuthentication().withUser("player3").password(passwordEncoder().encode("123")).roles("USER");
 
     // $ sshrun htpasswd -nbBC 10 admin adm1n
     // htpasswdでBCryptエンコードを行った後の文字列をパスワードとして指定している．
@@ -56,6 +60,12 @@ public class AuthConfiguration extends WebSecurityConfigurerAdapter {
 
     // Spring Securityの機能を利用してログアウト．ログアウト時は http://localhost:8000/ に戻る
     http.logout().logoutSuccessUrl("/");
+     http.sessionManagement()
+            // 同時ログイン数
+            .maximumSessions(1)
+            // ログインは先勝ち（true→先勝ち）
+            .maxSessionsPreventsLogin(true)
+            .sessionRegistry(sessionRegistry());
 
     /**
      * 以下2行はh2-consoleを利用するための設定なので，開発が完了したらコメントアウトすることが望ましい
@@ -65,4 +75,13 @@ public class AuthConfiguration extends WebSecurityConfigurerAdapter {
     http.csrf().disable();
     http.headers().frameOptions().disable();
   }
+   @Bean
+        public HttpSessionEventPublisher httpSessionEventPublisher() {
+            return new HttpSessionEventPublisher();
+        }
+  @Bean
+  public SessionRegistry sessionRegistry() {
+      SessionRegistry sessionRegistry = new SessionRegistryImpl();
+      return sessionRegistry;
+}
 }

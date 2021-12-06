@@ -5,6 +5,11 @@
   <meta charset="UTF-8">
   <title>gomoku</title>
   <style>
+    .btn--orange {
+      color: #fff;
+      background-color: #eb6100;
+    }
+
     .square {
       font-size: 22px;
     }
@@ -67,7 +72,23 @@
 
   <!-- 縦横の座標のみ渡す -->
   <!-- 自分のターンはリンクあり -->
-  <p th:if="${flag}">[[${winner}]]</p>
+  <p th:if="${flag}">[[${winner}]]
+    <br>
+    <button id='home' class="btn--orange">ホームへ</button>
+    <script>
+      function homeback() {
+        //yesならtrue,noならfalseが返ってくる
+        var yn = window.confirm("ホームに戻ってよろしいですか？");
+        if (yn) {
+          location.href = "/game";
+        } else {
+          window.alert('キャンセルされました');
+        }
+      }
+      let button = document.getElementById('home');
+      button.onclick = homeback;
+    </script>
+  </p>
   <span id="board" class="square">
     <div th:if="${turn == true}" class="square">
       <h2>あなたのターン</h2>

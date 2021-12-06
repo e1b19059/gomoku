@@ -1,15 +1,35 @@
 <!DOCTYPE html>
 <html lang="ja">
 
-<p><a href="/logout">ログアウト</a></p>
-
 <head>
   <meta charset="UTF-8">
   <title>START</title>
+  <style>
+    .btn {
+      color: #fff;
+      background-color: #5200eb;
+    }
+  </style>
+  <script>
+    window.onload = function () {
+      function logout() {
+        //yesならtrue,noならfalseが返ってくる
+        var yn = window.confirm("本当にログアウトしてよろしいですか？");
+        if (yn) {
+          location.href = "/logout";
+        } else {
+          window.alert('キャンセルされました');
+        }
+      }
+      let button = document.getElementById('check');
+      button.onclick = logout;
+    }
+  </script>
 </head>
 
 <body>
-  <h1>GAME</h1>
+  <button id='check' class="btn"> logout </button>
+  <h1>Welcome！[[${playername}]]</h1>
 
   <h2>プレイヤー</h2>
   <p th:if="${playerList}">
@@ -21,7 +41,10 @@
     <div th:each="player:${playerList}">
       <tr>
         <td>[[${player.id}]]</td>
-        <td><a th:href="@{/gomoku1(id=${player.id})}">[[${player.name}]]</a></td>
+        <th:block th:switch="${myid}">
+          <td th:case="${player.id}">[[${player.name}]]</td>
+          <td th:case="*"><a th:href="@{/gomoku1(id=${player.id})}">[[${player.name}]]</a></td>
+        </th:block>
       </tr>
     </div>
   </table>
