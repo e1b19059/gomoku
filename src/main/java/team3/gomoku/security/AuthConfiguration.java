@@ -26,6 +26,8 @@ public class AuthConfiguration extends WebSecurityConfigurerAdapter {
     auth.inMemoryAuthentication().withUser("player2")
         .password("$2y$10$lNpRyvOLBEzWZ.T52CsJEu4yA4tWwMsKWDSLRW5Dihjm.kX02VeVC").roles("USER");
 
+    auth.inMemoryAuthentication().withUser("player3").password(passwordEncoder().encode("123")).roles("USER");
+
     // $ sshrun htpasswd -nbBC 10 admin adm1n
     // htpasswdでBCryptエンコードを行った後の文字列をパスワードとして指定している．
     auth.inMemoryAuthentication().withUser("admin")
