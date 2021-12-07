@@ -6,6 +6,35 @@
 <head>
   <meta charset="UTF-8">
   <title>START</title>
+  <script>
+    window.onload = function () {
+      var sse = new EventSource('/game/matching');
+      sse.onmessage = function (event) {
+        console.log("sse.onmessage")
+        var matchList = JSON.parse(event.data);//JSONオブジェクトとしてparse
+        console.log(matchList);
+        var isActive_match_table = "";
+        var result_match_table = "";
+        for (var i = 0; i < matchList.length; i++) {
+          var s_tr = "<tr>";
+          var e_tr = "</tr>";
+          var m_id = "<td>" + matchList[i].id + "</td>";
+          var m_player1 = "<td>" + matchList[i].player1 + "</td>";
+          var m_player2 = "<td>" + matchList[i].player2 + "</td>";
+          if (matchList[i].isActive == true) {
+            isActive_match_table = isActive_match_table + s_tr + m_id + m_player1 + m_player2 + e_tr;
+          } else {
+            var m_winner = "<td>" + matchList[i].winner + "</td>";
+            result_match_table = result_match_table + s_tr + m_id + m_player1 + m_player2 + m_winner + e_tr;
+          }
+        }
+        var tbody = document.getElementById("isActive_match_list");
+        var fbody = document.getElementById("result_match_list");
+        tbody.innerHTML = isActive_match_table;
+        fbody.innerHTML = result_match_table;
+      }
+    }
+  </script>
 </head>
 
 <body>
@@ -28,27 +57,28 @@
   </p>
 
   <h2>アクティブな試合</h2>
-  <p th:if="${matchList}">
   <table border="2">
     <tr>
       <th>ID</th>
       <th>プレイヤー1</th>
       <th>プレイヤー2</th>
     </tr>
-    <div th:each="match:${matchList}">
-      <div th:if="${match.isActive == true}">
-        <tr>
-          <td>[[${match.id}]]</td>
-          <td>[[${match.player1}]]</td>
-          <td>[[${match.player2}]]</td>
-        </tr>
+    <span id="isActive_match_list">
+      <p th:if="${matchList}">
+      <div th:each="match:${matchList}">
+        <div th:if="${match.isActive == true}">
+          <tr>
+            <td>[[${match.id}]]</td>
+            <td>[[${match.player1}]]</td>
+            <td>[[${match.player2}]]</td>
+          </tr>
+        </div>
       </div>
-    </div>
+      </p>
+    </span>
   </table>
-  </p>
 
   <h2>試合結果</h2>
-  <p th:if="${matchList}">
   <table border="2">
     <tr>
       <th>ID</th>
@@ -56,18 +86,22 @@
       <th>プレイヤー2</th>
       <th>勝ち</th>
     </tr>
-    <div th:each="match:${matchList}">
-      <div th:if="${match.isActive == false}">
-        <tr>
-          <td>[[${match.id}]]</td>
-          <td>[[${match.player1}]]</td>
-          <td>[[${match.player2}]]</td>
-          <td>[[${match.winner}]]</td>
-        </tr>
+    <span id="result_match_list">
+      <p th:if="${matchList}">
+      <div th:each="match:${matchList}">
+        <div th:if="${match.isActive == false}">
+          <tr>
+            <td>[[${match.id}]]</td>
+            <td>[[${match.player1}]]</td>
+            <td>[[${match.player2}]]</td>
+            <td>[[${match.winner}]]</td>
+          </tr>
+        </div>
       </div>
-    </div>
+      </p>
+    </span>
   </table>
-  </p>
+
 
 </body>
 

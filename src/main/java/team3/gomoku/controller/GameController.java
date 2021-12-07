@@ -19,6 +19,7 @@ import team3.gomoku.model.MatchMapper;
 import team3.gomoku.model.Player;
 import team3.gomoku.model.PlayerMapper;
 import team3.gomoku.service.AsyncGame;
+import team3.gomoku.service.AsyncMatching;
 
 @Controller
 public class GameController {
@@ -26,6 +27,9 @@ public class GameController {
 
   @Autowired
   private AsyncGame ag;
+
+  @Autowired
+  private AsyncMatching am;
 
   @Autowired
   Board gomokuBoard;
@@ -55,33 +59,32 @@ public class GameController {
     match.setPlayer2(id);
     ArrayList<Integer> player2 = matchMapper.selectByActive(true);
     boolean flag = false;
-    for(int player : player2){
-      if(player==myid){
+    for (int player : player2) {
+      if (player == myid) {
         flag = true;
         break;
       }
     }
-    if (!flag){
+    if (!flag) {
       matchMapper.insertMatch(match);
     }
     model.addAttribute("board", this.gomokuBoard.getBoard());
     model.addAttribute("board_info", this.gomokuBoard.getBoardinfo());
     ArrayList<Match> activeMatchs = matchMapper.selectActiveMatch();
-    //一個目しかとり出さない
+    // 一個目しかとり出さない
     boolean turn = false;
-    for(Match acmatch : activeMatchs){
-      if(acmatch.getPlayer1()==myid){
+    for (Match acmatch : activeMatchs) {
+      if (acmatch.getPlayer1() == myid) {
         turn = true;
         break;
-      }
-      else{
+      } else {
         turn = false;
         break;
       }
     }
-     //playerテーブルのturnを update
-      playerMapper.updateById(myid, turn);
-      model.addAttribute("turn", turn);
+    // playerテーブルのturnを update
+    playerMapper.updateById(myid, turn);
+    model.addAttribute("turn", turn);
     return "gomoku.html";
   }
 
@@ -103,15 +106,14 @@ public class GameController {
     }
     model.addAttribute("flag", flag);
     model.addAttribute("winner", winner);
-    //player tableのturnを更新
-    int yourid=0;
+    // player tableのturnを更新
+    int yourid = 0;
     ArrayList<Match> activeMatchs = matchMapper.selectActiveMatch();
-    for(Match acmatch : activeMatchs){
-      if(acmatch.getPlayer1()==myid){
+    for (Match acmatch : activeMatchs) {
+      if (acmatch.getPlayer1() == myid) {
         yourid = acmatch.getPlayer2();
         break;
-      }
-      else{
+      } else {
         yourid = acmatch.getPlayer1();
         break;
       }
@@ -129,11 +131,18 @@ public class GameController {
     return sseEmitter;
   }
 
-   @GetMapping("gomoku2/turn")
+  @GetMapping("gomoku2/turn")
   public SseEmitter Turn(Principal prin) {
     int myid = playerMapper.selectByName(prin.getName());
     final SseEmitter sseEmitter = new SseEmitter();
     this.ag.turn(sseEmitter, myid);
+    return sseEmitter;
+  }
+
+  @GetMapping("game/matching")
+  public SseEmitter Matching(Principal prin) {
+    final SseEmitter sseEmitter = new SseEmitter();
+    this.am.matching(sseEmitter);
     return sseEmitter;
   }
 }
