@@ -139,6 +139,7 @@ public class GameController {
     return "gomoku.html";
   }
 
+
   @GetMapping("gomoku2/load")
   public SseEmitter Load() {
     final SseEmitter sseEmitter = new SseEmitter();
