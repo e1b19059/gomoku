@@ -10,3 +10,10 @@ CREATE TABLE matches (
     isActive boolean NOT NULL,
     winner INT
 );
+
+CREATE TABLE matchinfo (
+    id IDENTITY,
+    player1 INT NOT NULL,
+    player2 INT NOT NULL,
+    palyer2Active boolean NOT NULL,
+);
