@@ -124,10 +124,12 @@ public class GameController {
       model.addAttribute("flag", flag);
       model.addAttribute("winner", winner);
       // 試合が終わったので、ターンの更新
-      playerMapper.updateById(myid, false);
-      playerMapper.updateById(yourid, false);
+      //playerMapper.updateById(myid, false);
+      //playerMapper.updateById(yourid, false);
+      playerMapper.updatetonull(myid);
+      playerMapper.updatetonull(yourid);
       // matchesテーブルの更新
-      matchMapper.updateEndById(activeMatches.get(num - 1).getId());// リストの要素は0からなのでnumから1引く
+      matchMapper.updateEndById(activeMatches.get(num - 1).getId(), myid);// リストの要素は0からなのでnumから1引く
     } else {
       // 試合が続いているので、ターンの更新
       playerMapper.updateById(myid, false);
