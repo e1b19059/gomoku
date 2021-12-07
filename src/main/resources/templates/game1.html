@@ -36,11 +36,16 @@
   <table border="2">
     <tr>
       <th>ID</th>
-      <th>プレイヤー名</th>
+      <th>プレイヤー名(wait)</th>
+      <th>プレイヤー名(gomoku1)</th>
     </tr>
     <div th:each="player:${playerList}">
       <tr>
         <td>[[${player.id}]]</td>
+        <th:block th:switch="${myid}">
+          <td th:case="${player.id}">[[${player.name}]]</td>
+          <td th:case="*"><a th:href="@{/wait(id=${player.id})}">[[${player.name}]]</a></td>
+        </th:block>
         <th:block th:switch="${myid}">
           <td th:case="${player.id}">[[${player.name}]]</td>
           <td th:case="*"><a th:href="@{/gomoku1(id=${player.id})}">[[${player.name}]]</a></td>

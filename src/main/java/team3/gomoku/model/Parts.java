@@ -1,8 +1,6 @@
 package team3.gomoku.model;
 
 import org.springframework.stereotype.Component;
-import team3.gomoku.model.Board;
-import team3.gomoku.model.Game;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Component
