@@ -21,11 +21,15 @@ import team3.gomoku.model.PlayerMapper;
 import team3.gomoku.model.Matchinfo;
 import team3.gomoku.model.MatchinfoMapper;
 import team3.gomoku.service.AsyncGame;
+import team3.gomoku.service.AsyncMatching;
 
 @Controller
 public class GameController {
   @Autowired
   private AsyncGame ag;
+
+  @Autowired
+  private AsyncMatching am;
 
   @Autowired
   Board gomokuBoard;
@@ -183,6 +187,13 @@ public class GameController {
     int myid = playerMapper.selectByName(prin.getName());
     final SseEmitter sseEmitter = new SseEmitter();
     this.ag.turn(sseEmitter, myid);
+    return sseEmitter;
+  }
+
+  @GetMapping("game/matching")
+  public SseEmitter Matching(Principal prin) {
+    final SseEmitter sseEmitter = new SseEmitter();
+    this.am.matching(sseEmitter);
     return sseEmitter;
   }
 }
