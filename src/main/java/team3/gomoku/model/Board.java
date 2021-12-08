@@ -9,6 +9,8 @@ public class Board {
   String board[][] = new String[H][W];
   int board_info[][] = new int[H][W];
   int flag = 0;// 石の色
+  String winner = "";
+  int winner_flag = -1;
 
   public Board() {
     this.board = initBoard();
@@ -82,5 +84,19 @@ public class Board {
     flag = 0;
     this.board = initBoard();
     this.board_info = initBoardinfo();
+    this.winner = "";
+    this.winner_flag = -1;
   }
+  public String getWinner() {
+    return winner;
+  }
+  public void setWinner(String winner) {
+    this.winner = winner;
+  }
+  public void setWinnerFlag(int flag){
+    this.winner_flag = flag;
+  }
+  public int getWinnerFlag() {
+    return winner_flag;
+}
 }
