@@ -3,12 +3,38 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Wait</title>
+  <title>WaitingRoom</title>
+  <script>
+    window.onload = function () {
+      var sse = new EventSource('/wait/matchinfo');
+      sse.onmessage = function (event) {
+        var matchinfo = JSON.parse(event.data);//JSONオブジェクトとしてparse
+        console.log(matchinfo.start)
+        var matchinfo_body = "";
+        var mbody = document.getElementById("matching");
+
+        const tomatch = () => {
+          location.href = "/wait/tomatch";
+        }
+
+        if (matchinfo.start) {
+          matchinfo_body = "<h1>対戦相手が決まりました<br>試合を開始します</h1>"
+          mbody.innerHTML = matchinfo_body;
+          setTimeout(tomatch,3000);
+        } else {
+          matchinfo_body = "<h1>対戦相手を待っています</h1>";
+          mbody.innerHTML = matchinfo_body;
+        }
+      }
+    }
+  </script>
 </head>
 
 <body>
-  <h1>相手を待っています．</h1>
-  
+  <span id="matching">
+    <h1>対戦相手を待っています</h1>
+  </span>
+
 </body>
 
 </html>

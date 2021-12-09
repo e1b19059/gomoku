@@ -126,6 +126,8 @@ public class GameController {
       } else {
         winner = "白の勝利";
       }
+      this.gomokuBoard.setWinner(winner);
+      this.gomokuBoard.setWinnerFlag(flag);
       model.addAttribute("flag", flag);
       model.addAttribute("winner", winner);
       // 試合が終わったので、ターンの更新
@@ -135,6 +137,9 @@ public class GameController {
       playerMapper.updatetonull(yourid);
       // matchesテーブルの更新
       matchMapper.updateEndById(activeMatches.get(num - 1).getId(), myid);// リストの要素は0からなのでnumから1引く
+      ArrayList<Matchinfo> matchinfoList = matchinfoMapper.selectActiveMatchinfo(true);
+      int matchinfo_id = matchinfoList.get(0).getId();
+      matchinfoMapper.deleteById(matchinfo_id);
     } else {
       // 試合が続いているので、ターンの更新
       playerMapper.updateById(myid, false);
@@ -175,6 +180,28 @@ public class GameController {
     return "wait.html";
   }
 
+  @GetMapping("wait/tomatch")
+  public String tomatch(ModelMap model, Principal prin) {
+    Matchinfo matchinfo = new Matchinfo();
+    int myid = playerMapper.selectByName(prin.getName());
+    ArrayList<Matchinfo> matchinfoList = matchinfoMapper.selectActiveMatchinfo(true);
+
+    gomokuBoard.initAll();
+    model.addAttribute("board", this.gomokuBoard.getBoard());
+    model.addAttribute("board_info", this.gomokuBoard.getBoardinfo());
+    // 一個目しかとり出さない
+    matchinfo = matchinfoList.get(0);
+    boolean turn = false;
+      if (matchinfo.getPlayer1() == myid) {
+        turn = true;
+      } else {
+        turn = false;
+      }
+    playerMapper.updateById(myid, turn);
+    model.addAttribute("turn", turn);
+    return "gomoku.html";
+  }
+
   @GetMapping("gomoku2/load")
   public SseEmitter Load() {
     final SseEmitter sseEmitter = new SseEmitter();
@@ -194,6 +221,13 @@ public class GameController {
   public SseEmitter Matching(Principal prin) {
     final SseEmitter sseEmitter = new SseEmitter();
     this.am.matching(sseEmitter);
+    return sseEmitter;
+  }
+
+   @GetMapping("wait/matchinfo")
+  public SseEmitter sendmatchinfo() {
+    final SseEmitter sseEmitter = new SseEmitter();
+    this.ag.tomatch(sseEmitter);
     return sseEmitter;
   }
 }

@@ -41,6 +41,26 @@
           console.log(boards)
           var board_body = "<h2>あなたのターン</h2>";
           var off_board = "<h2>相手のターン</h2>";
+          function homeback() {
+            //yesならtrue,noならfalseが返ってくる
+            var yn = window.confirm("ホームに戻ってよろしいですか？");
+            if (yn) {
+              location.href = "/game";
+            } else {
+              window.alert('キャンセルされました');
+            }
+          }
+
+          if (boards.winnerFlag != -1) {
+            let winner = boards.winner;
+            off_board = "<h2>ゲームが終了しました</h2>";
+            var winnershow = "<h2>" + winner + "</h2><br>"
+            winnershow += "<button id='home' class='btn--orange'>ホームへ</button><br>"
+            var wbody = document.getElementById("winner");
+            wbody.innerHTML = winnershow;
+            let button = document.getElementById('home');
+            button.onclick = homeback;
+          }
           for (var i = 0; i < 15; i++) {
             for (var j = 0; j < 15; j++) {
               off_board += "<span class='text'>" + boards.board[i][j] + "</span>"
@@ -72,23 +92,9 @@
 
   <!-- 縦横の座標のみ渡す -->
   <!-- 自分のターンはリンクあり -->
-  <p th:if="${flag}">[[${winner}]]
-    <br>
-    <button id='home' class="btn--orange">ホームへ</button>
-    <script>
-      function homeback() {
-        //yesならtrue,noならfalseが返ってくる
-        var yn = window.confirm("ホームに戻ってよろしいですか？");
-        if (yn) {
-          location.href = "/game";
-        } else {
-          window.alert('キャンセルされました');
-        }
-      }
-      let button = document.getElementById('home');
-      button.onclick = homeback;
-    </script>
-  </p>
+  <span id="winner">
+    <h2 th:if="${flag}">[[${winner}]]</h2>
+  </span>
   <span id="board" class="square">
     <div th:if="${turn == true}" class="square">
       <h2>あなたのターン</h2>
