@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import team3.gomoku.model.Board;
 import org.springframework.beans.factory.annotation.Autowired;
-import team3.gomoku.model.Player;
 import team3.gomoku.model.PlayerMapper;
 import team3.gomoku.model.Match;
 import team3.gomoku.model.MatchMapper;

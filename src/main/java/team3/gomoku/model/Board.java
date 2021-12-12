@@ -96,7 +96,12 @@ public class Board {
   public void setWinnerFlag(int flag){
     this.winner_flag = flag;
   }
+
   public int getWinnerFlag() {
     return winner_flag;
-}
+  }
+
+  public int getStoneFlag() {
+    return flag;
+  }
 }

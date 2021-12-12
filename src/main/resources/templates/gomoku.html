@@ -50,7 +50,16 @@
               window.alert('キャンセルされました');
             }
           }
-
+          function surrender() {
+            //yesならtrue,noならfalseが返ってくる
+            var yn = window.confirm("投了しますか？");
+            if (yn) {
+              location.href = "/gomoku2/surrender";
+            } else {
+              window.alert('キャンセルされました');
+            }
+          }
+          
           if (boards.winnerFlag != -1) {
             let winner = boards.winner;
             off_board = "<h2>ゲームが終了しました</h2>";
@@ -60,6 +69,12 @@
             wbody.innerHTML = winnershow;
             let button = document.getElementById('home');
             button.onclick = homeback;
+          } else if (boards.winnerFlag == -1) {
+            let winner = "<button id='surrender' class='btn--orange'>投了</button><br>"
+            var wbody = document.getElementById("winner");
+            wbody.innerHTML = winner;
+            let button = document.getElementById('surrender');
+            button.onclick = surrender;
           }
           for (var i = 0; i < 15; i++) {
             for (var j = 0; j < 15; j++) {
