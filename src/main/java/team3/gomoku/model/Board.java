@@ -101,7 +101,4 @@ public class Board {
     return winner_flag;
   }
 
-  public int getStoneFlag() {
-    return flag;
-  }
 }
