@@ -3,8 +3,6 @@ package team3.gomoku.controller;
 import java.security.Principal;
 import java.util.ArrayList;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -145,6 +143,53 @@ public class GameController {
       playerMapper.updateById(myid, false);
       playerMapper.updateById(yourid, true);
     }
+    model.addAttribute("turn", false);
+    return "gomoku.html";
+  }
+
+  @GetMapping("gomoku2/surrender")
+  public String gomoku2(ModelMap model, Principal prin) {
+    model.addAttribute("board", this.gomokuBoard.getBoard());
+    model.addAttribute("board_info", this.gomokuBoard.getBoardinfo());
+    int flag = 1; // 投了した側が負けなので
+    int myid = playerMapper.selectByName(prin.getName());
+    String winner = " ";
+    int mystonecolor = 0;
+
+    // player tableのturnを更新
+    int yourid = 0;
+    int num = 0;// リストの何番目か数える
+    ArrayList<Match> activeMatches = matchMapper.selectActiveMatch();
+    for (Match acmatch : activeMatches) {
+      num++;
+      if (acmatch.getPlayer1() == myid) {
+        yourid = acmatch.getPlayer2();
+        mystonecolor = 0;
+        break;
+      } else {
+        yourid = acmatch.getPlayer1();
+        mystonecolor = 1;
+        break;
+      }
+    }
+
+    if (mystonecolor == 1) {
+      winner = "黒の勝利";
+    } else {
+      winner = "白の勝利";
+    }
+    this.gomokuBoard.setWinner(winner);
+    this.gomokuBoard.setWinnerFlag(flag);
+    model.addAttribute("flag", flag);
+    model.addAttribute("winner", winner);
+    // 試合が終わったので、ターンの更新
+    playerMapper.updatetonull(myid);
+    playerMapper.updatetonull(yourid);
+    // matchesテーブルの更新
+    matchMapper.updateEndById(activeMatches.get(num - 1).getId(), yourid);// リストの要素は0からなのでnumから1引く
+    ArrayList<Matchinfo> matchinfoList = matchinfoMapper.selectActiveMatchinfo(true);
+    int matchinfo_id = matchinfoList.get(0).getId();
+    matchinfoMapper.deleteById(matchinfo_id);
     model.addAttribute("turn", false);
     return "gomoku.html";
   }
