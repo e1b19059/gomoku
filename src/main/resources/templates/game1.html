@@ -23,8 +23,6 @@
       }
       let button = document.getElementById('check');
       button.onclick = logout;
-    }
-    window.onload = function () {
       var sse = new EventSource('/game/matching');
       sse.onmessage = function (event) {
         console.log("sse.onmessage")
