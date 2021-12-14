@@ -6,6 +6,15 @@
   <title>WaitingRoom</title>
   <script>
     window.onload = function () {
+      function cancel() {
+        //yesならtrue,noならfalseが返ってくる
+        var yn = window.confirm("ゲームの申し込みをキャンセルしますか？");
+        if (yn) {
+          location.href = "/game1/cancel";
+        }
+      }
+
+
       var sse = new EventSource('/wait/matchinfo');
       sse.onmessage = function (event) {
         var matchinfo = JSON.parse(event.data);//JSONオブジェクトとしてparse
@@ -22,8 +31,10 @@
           mbody.innerHTML = matchinfo_body;
           setTimeout(tomatch,3000);
         } else {
-          matchinfo_body = "<h1>対戦相手を待っています</h1>";
+          matchinfo_body = "<button id='cancel'> キャンセル </button><br><h1>対戦相手を待っています</h1>";
           mbody.innerHTML = matchinfo_body;
+          let button = document.getElementById('cancel');
+          button.onclick = cancel;
         }
       }
     }
@@ -31,7 +42,9 @@
 </head>
 
 <body>
+
   <span id="matching">
+    <button id='cancel'> キャンセル </button>
     <h1>対戦相手を待っています</h1>
   </span>
 

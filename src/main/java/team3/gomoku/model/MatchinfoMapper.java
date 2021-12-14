@@ -29,4 +29,7 @@ public interface MatchinfoMapper {
 
   @Delete("DELETE FROM matchinfo WHERE ID =#{id}")
   boolean deleteById(int id);
+
+  @Delete("DELETE FROM matchinfo WHERE player1=#{player1}")
+  boolean deleteBy1(int player1);
 }

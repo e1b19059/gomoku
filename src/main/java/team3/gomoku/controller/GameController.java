@@ -54,6 +54,24 @@ public class GameController {
     return "game1.html";
   }
 
+  @GetMapping("/game1/cancel")
+  public String cancel(ModelMap model, Principal prin) {
+    int myid = playerMapper.selectByName(prin.getName());
+
+    int matchid = matchMapper.select1ByActive(myid);
+    matchMapper.deleteById(matchid);
+    matchinfoMapper.deleteBy1(myid);
+
+    ArrayList<Match> matchList = matchMapper.selectAllMatch();
+    ArrayList<Player> playerList = playerMapper.selectAllPlayer();
+
+    model.addAttribute("matchList", matchList);
+    model.addAttribute("playerList", playerList);
+    model.addAttribute("myid", myid);
+    model.addAttribute("playername", prin.getName());
+    return "game1.html";
+  }
+
   @GetMapping("gomoku1")
   public String gomoku1(ModelMap model, @RequestParam int id, Principal prin) {
     Match match = new Match();
