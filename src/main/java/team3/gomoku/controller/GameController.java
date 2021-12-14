@@ -93,6 +93,11 @@ public class GameController {
     return "gomoku.html";
   }
 
+  @GetMapping("/rule")
+  public String rule() {
+    return "rule.html";
+  }
+
   @GetMapping("gomoku2")
   public String gomoku2(@RequestParam int col, @RequestParam int row, ModelMap model, Principal prin) {
     Game game = new Game();
@@ -237,11 +242,11 @@ public class GameController {
     // 一個目しかとり出さない
     matchinfo = matchinfoList.get(0);
     boolean turn = false;
-      if (matchinfo.getPlayer1() == myid) {
-        turn = true;
-      } else {
-        turn = false;
-      }
+    if (matchinfo.getPlayer1() == myid) {
+      turn = true;
+    } else {
+      turn = false;
+    }
     playerMapper.updateById(myid, turn);
     model.addAttribute("turn", turn);
     return "gomoku.html";
@@ -269,7 +274,7 @@ public class GameController {
     return sseEmitter;
   }
 
-   @GetMapping("wait/matchinfo")
+  @GetMapping("wait/matchinfo")
   public SseEmitter sendmatchinfo() {
     final SseEmitter sseEmitter = new SseEmitter();
     this.ag.tomatch(sseEmitter);
