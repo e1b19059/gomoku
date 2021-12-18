@@ -181,10 +181,8 @@ public class GameController {
 
     // player tableのturnを更新
     int yourid = 0;
-    int num = 0;// リストの何番目か数える
-    ArrayList<Match> activeMatches = matchMapper.selectActiveMatch();
-    for (Match acmatch : activeMatches) {
-      num++;
+    ArrayList<Matchinfo> activeMatches = matchinfoMapper.selectActiveMatchinfo(true);
+    for (Matchinfo acmatch : activeMatches) {
       if (acmatch.getPlayer1() == myid) {
         yourid = acmatch.getPlayer2();
         mystonecolor = 0;
@@ -209,7 +207,7 @@ public class GameController {
     playerMapper.updatetonull(myid);
     playerMapper.updatetonull(yourid);
     // matchesテーブルの更新
-    matchMapper.updateEndById(activeMatches.get(num - 1).getId(), yourid);// リストの要素は0からなのでnumから1引く
+    matchMapper.updatebyplayers(activeMatches.get(0).getPlayer1(),activeMatches.get(0).getPlayer2(), yourid);// リストの要素は0からなのでnumから1引く
     ArrayList<Matchinfo> matchinfoList = matchinfoMapper.selectActiveMatchinfo(true);
     int matchinfo_id = matchinfoList.get(0).getId();
     matchinfoMapper.deleteById(matchinfo_id);

@@ -28,8 +28,8 @@
   </style>
   <script>
     window.onload = function () {
-      var tsse = new EventSource('/gomoku2/turn');
       var sse = new EventSource('/gomoku2/load');
+      var tsse = new EventSource('/gomoku2/turn');
       tsse.onmessage = function (event) {
         console.log("tsse.onmessage");
         var player = JSON.parse(event.data);//JSONオブジェクトとしてparse
