@@ -31,6 +31,9 @@ public interface MatchMapper {
   @Update("UPDATE matches SET isActive = false, winner = #{winner} WHERE ID = #{id}")
   void updateEndById(int id, int winner);
 
+  @Update("UPDATE matches SET isActive = false, winner = #{winner} where isActive=true and player1=#{player1} and player2=#{player2};")
+  void updatebyplayers(int player1, int player2, int winner);
+
   @Delete("DELETE FROM matches WHERE ID =#{id}")
   boolean deleteById(int id);
 }

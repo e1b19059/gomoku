@@ -59,7 +59,7 @@
               window.alert('キャンセルされました');
             }
           }
-          
+
           if (boards.winnerFlag != -1) {
             let winner = boards.winner;
             off_board = "<h2>ゲームが終了しました</h2>";
@@ -108,6 +108,7 @@
   <!-- 縦横の座標のみ渡す -->
   <!-- 自分のターンはリンクあり -->
   <span id="winner">
+    <button id='surrender' class='btn--orange'>投了</button><br>
     <h2 th:if="${flag}">[[${winner}]]</h2>
   </span>
   <span id="board" class="square">
