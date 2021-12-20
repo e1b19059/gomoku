@@ -3,7 +3,9 @@
 
 <head>
   <meta charset="UTF-8">
+  <audio th:src="@{/sound/bgm1.mp3}" autoplay loop></audio>
   <title>gomoku</title>
+  <link rel="icon" th:src="@{favicon.ico}">
   <style>
     .btn--orange {
       color: #fff;
@@ -28,8 +30,8 @@
   </style>
   <script>
     window.onload = function () {
-      var tsse = new EventSource('/gomoku2/turn');
       var sse = new EventSource('/gomoku2/load');
+      var tsse = new EventSource('/gomoku2/turn');
       tsse.onmessage = function (event) {
         console.log("tsse.onmessage");
         var player = JSON.parse(event.data);//JSONオブジェクトとしてparse
@@ -59,7 +61,7 @@
               window.alert('キャンセルされました');
             }
           }
-          
+
           if (boards.winnerFlag != -1) {
             let winner = boards.winner;
             off_board = "<h2>ゲームが終了しました</h2>";
@@ -108,6 +110,7 @@
   <!-- 縦横の座標のみ渡す -->
   <!-- 自分のターンはリンクあり -->
   <span id="winner">
+    <button id='surrender' class='btn--orange'>投了</button><br>
     <h2 th:if="${flag}">[[${winner}]]</h2>
   </span>
   <span id="board" class="square">
