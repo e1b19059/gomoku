@@ -10,4 +10,8 @@ public class MiniGameController {
   public String minigame() {
     return "minigame.html";
   }
+  @GetMapping("/mine")
+  public String minesweeper() {
+    return "mine.html";
+  }
 }
