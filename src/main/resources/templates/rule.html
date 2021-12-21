@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ja" class="h-100">
+<html lang="ja" class="h-100" xmlns:th="http://www.thymeleaf.org">
 
 <head>
   <meta charset="utf-8">
@@ -93,12 +93,19 @@
       <h2>本サイトでの遊び方</h2>
       <hr>
       <ol>
-        <li>登録されているユーザIDとパスワードを入力してホームからログインして下さい。</li>
-        <li>対戦したいプレイヤーを選択して下さい。</li>
-        <li>相手が自分を選択するとゲームがスタートされます。</li>
-        <li>最初に相手を選択したプレイヤーが先行となります。</li>
+        <li>登録されているユーザIDとパスワードを入力してログインして下さい。</li>
+        <li>ログインすると、ホーム画面が表示されます。</li>
+        <img th:src="@{images/start01.png}" alt="スタート画面1" width="200" height="350">
+        <li>相手を選択すると待機画面に遷移します。相手もあなたを選択するとゲーム画面に遷移します。</li>
+        <img th:src="@{images/wait01.png}" alt="待機画面1" width="400" height="200">
+        <img th:src="@{images/wait02.png}" alt="待機画面2" width="400" height="200">
+        <li>「あなたのターン」のとき、マス目をクリックすることで石を置くことができます。</li>
+        <img th:src="@{images/gomoku01.png}" alt="ゲーム画面1" width="400" height="600">
+        <img th:src="@{images/gomoku02.png}" alt="ゲーム画面2" width="400" height="600">
+        <li>ゲームが終了すると、ホーム画面へ戻るボタンが表示されます。</li>
+        <img th:src="@{images/gomoku03.png}" alt="ゲーム画面3" width="400" height="600">
+        <li>投了ボタンを押すと投了できます。</li>
         <li>ログアウトする場合は、左上のログアウトボタンを押して下さい。</li>
-        <li><strong>ゲームの途中</strong>でログアウトすることはできません。</li>
       </ol>
     </div>
   </main>
