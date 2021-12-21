@@ -3,13 +3,41 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>minesweeper</title>
+  <style>
+    #stage {
+      display: grid;
+      grid-template-columns: repeat(9, 45px);
+      /* 9列 幅45px */
+      grid-template-rows: repeat(9, 45px);
+      /* 9行 高さ45px */
+      grid-gap: 1px;
+      /* マス同士の隙間1px */
+    }
+
+    .cell {
+      background: whitesmoke;
+    }
+
+    .p1 {
+      background: blue;
+    }
+
+    .p2 {
+      background: red;
+    }
+  </style>
 </head>
 
 <body>
-  <p>minesweeper</p>
+  <h1>minesweeper</h1>
+
+  <div id='stage'>
+    <button type="submit" name="ishi" th:each="i : ${#numbers.sequence(1,81)}" th:value="${i}">
+      <div th:if="${ishi==i}" class="p1"><br><br></div>
+    </button>
+  </div>
+
   <a href="/minigame">back</a>
 </body>
 
