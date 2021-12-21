@@ -3,6 +3,8 @@
 
 <head>
   <meta charset="UTF-8">
+  <link rel="icon" th:src="@{/favicon.ico}">
+  <audio th:src="@{/sound/bgm2.mp3}" autoplay loop></audio>
   <title>START</title>
   <style>
     .btn {
@@ -47,6 +49,7 @@
 </head>
 
 <body>
+
   <button id='check' class="btn"> logout </button>
   <h1>Welcome！[[${playername}]]</h1>
 
