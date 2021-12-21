@@ -77,24 +77,34 @@ public class AsyncGame {
   }
 
   @Async
-  public void tomatch(SseEmitter emitter) {
-    dbUpdated = true;
-    Matchinfo info = new Matchinfo();
+  public void tomatch(SseEmitter emitter, int myid) {
+    dbUpdated2 = true;
+    Matchinfo send_info = new Matchinfo();
     try {
       while (true) {// 無限ループ
         // DBが更新されていなければ0.5s休み
-        if (false == dbUpdated) {
+        if (false == dbUpdated2) {
           TimeUnit.MILLISECONDS.sleep(500);
           continue;
         }
         // DBが更新されていれば更新後のリストを取得してsendし，1s休み，dbUpdatedをfalseにする
         ArrayList<Matchinfo> matchinfoList = matchinfoMapper.selectAllMatchinfo();
-        info = matchinfoList.get(0);
+        for(Matchinfo info:matchinfoList){
+          if(info.getPlayer1()==myid){
+            emitter.send(info);
+            send_info = info;
+            break;
+          }
+          else if(info.getPlayer2()==myid){
+            emitter.send(info);
+            send_info = info;
+          }
+        }
 
-        emitter.send(info);
-        logger.info("send:"+info.getStart());
+
+        logger.info("send:"+send_info.getStart());
         TimeUnit.MILLISECONDS.sleep(500);
-        dbUpdated = false;
+        dbUpdated2 = false;
       }
     } catch (Exception e) {
       // 例外の名前とメッセージだけ表示する

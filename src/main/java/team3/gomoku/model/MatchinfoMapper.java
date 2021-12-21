@@ -17,8 +17,8 @@ public interface MatchinfoMapper {
   @Select("select * from matchinfo;")
   ArrayList<Matchinfo> selectAllMatchinfo();
 
-  @Select("select id from matchinfo where player2 = #{player2};")
-  int selectByplayer2Matchinfo(int player2);
+  @Select("select id from matchinfo where player1 = #{player1} and player2 = #{player2};")
+  int selectByplayersMatchinfo(int player2,int player1);
 
   @Insert("INSERT INTO matchinfo (player1,player2,start) VALUES (#{player1},#{player2},false)")
   @Options(useGeneratedKeys = true, keyColumn = "id", keyProperty = "id")

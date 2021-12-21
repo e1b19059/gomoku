@@ -129,9 +129,8 @@ public class GameController {
     // player tableのturnを更新
     int yourid = 0;
     int num = 0;// リストの何番目か数える
-    ArrayList<Match> activeMatches = matchMapper.selectActiveMatch();
-    for (Match acmatch : activeMatches) {
-      num++;
+    ArrayList<Matchinfo> activeMatches = matchinfoMapper.selectActiveMatchinfo(true);
+    for (Matchinfo acmatch : activeMatches) {
       if (acmatch.getPlayer1() == myid) {
         yourid = acmatch.getPlayer2();
         break;
@@ -157,7 +156,8 @@ public class GameController {
       playerMapper.updatetonull(myid);
       playerMapper.updatetonull(yourid);
       // matchesテーブルの更新
-      matchMapper.updateEndById(activeMatches.get(num - 1).getId(), myid);// リストの要素は0からなのでnumから1引く
+
+      matchMapper.updatebyplayers(activeMatches.get(0).getPlayer1(),activeMatches.get(0).getPlayer2(), myid);
       ArrayList<Matchinfo> matchinfoList = matchinfoMapper.selectActiveMatchinfo(true);
       int matchinfo_id = matchinfoList.get(0).getId();
       matchinfoMapper.deleteById(matchinfo_id);
@@ -181,10 +181,8 @@ public class GameController {
 
     // player tableのturnを更新
     int yourid = 0;
-    int num = 0;// リストの何番目か数える
-    ArrayList<Match> activeMatches = matchMapper.selectActiveMatch();
-    for (Match acmatch : activeMatches) {
-      num++;
+    ArrayList<Matchinfo> activeMatches = matchinfoMapper.selectActiveMatchinfo(true);
+    for (Matchinfo acmatch : activeMatches) {
       if (acmatch.getPlayer1() == myid) {
         yourid = acmatch.getPlayer2();
         mystonecolor = 0;
@@ -209,7 +207,7 @@ public class GameController {
     playerMapper.updatetonull(myid);
     playerMapper.updatetonull(yourid);
     // matchesテーブルの更新
-    matchMapper.updateEndById(activeMatches.get(num - 1).getId(), yourid);// リストの要素は0からなのでnumから1引く
+    matchMapper.updatebyplayers(activeMatches.get(0).getPlayer1(),activeMatches.get(0).getPlayer2(), yourid);// リストの要素は0からなのでnumから1引く
     ArrayList<Matchinfo> matchinfoList = matchinfoMapper.selectActiveMatchinfo(true);
     int matchinfo_id = matchinfoList.get(0).getId();
     matchinfoMapper.deleteById(matchinfo_id);
@@ -228,17 +226,17 @@ public class GameController {
     matchinfo.setPlayer2(id);
     matchinfo.setStart(false);
 
-    ArrayList<Integer> player2 = matchMapper.selectByActive(true);
+    ArrayList<Match> matches = matchMapper.selectActiveMatch();
     boolean flag = false;
-    for (int player : player2) {
-      if (player == myid) {
+    for (Match cmatch : matches) {
+      if (cmatch.getPlayer2() == myid && cmatch.getPlayer1()==id) {
         flag = true;
         break;
       }
     }
 
     if (flag) {
-      int matchinfo_id = matchinfoMapper.selectByplayer2Matchinfo(myid);
+      int matchinfo_id = matchinfoMapper.selectByplayersMatchinfo(myid,id);
       matchinfoMapper.updateById(matchinfo_id);
     } else {
       matchMapper.insertMatch(match);
@@ -293,9 +291,10 @@ public class GameController {
   }
 
   @GetMapping("wait/matchinfo")
-  public SseEmitter sendmatchinfo() {
+  public SseEmitter sendmatchinfo(Principal prin) {
+    int myid = playerMapper.selectByName(prin.getName());
     final SseEmitter sseEmitter = new SseEmitter();
-    this.ag.tomatch(sseEmitter);
+    this.ag.tomatch(sseEmitter, myid);
     return sseEmitter;
   }
 }
