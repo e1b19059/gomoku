@@ -11,6 +11,13 @@
       color: #fff;
       background-color: #5200eb;
     }
+
+    #main {
+      margin-left:auto;
+      margin-right:auto;
+      text-align:left;
+      width:450px;
+    }
   </style>
   <script>
     window.onload = function () {
@@ -49,75 +56,73 @@
 </head>
 
 <body>
+  <div id="main">
+    <button id='check' class="btn"> logout </button>
+    <h1>Welcome！[[${playername}]]</h1>
 
-  <button id='check' class="btn"> logout </button>
-  <h1>Welcome！[[${playername}]]</h1>
-
-  <h2>プレイヤー</h2>
-  <p th:if="${playerList}">
-  <table border="2">
-    <tr>
-      <th>ID</th>
-      <th>プレイヤー名</th>
-    </tr>
-    <div th:each="player:${playerList}">
+    <h2>プレイヤー</h2>
+    <p th:if="${playerList}">
+    <table border="2">
       <tr>
-        <td>[[${player.id}]]</td>
-        <th:block th:switch="${myid}">
-          <td th:case="${player.id}">[[${player.name}]]</td>
-          <td th:case="*"><a th:href="@{/wait(id=${player.id})}">[[${player.name}]]</a></td>
-        </th:block>
-
+        <th>ID</th>
+        <th>プレイヤー名</th>
       </tr>
-    </div>
-  </table>
-  </p>
+      <div th:each="player:${playerList}">
+        <tr>
+          <td>[[${player.id}]]</td>
+          <th:block th:switch="${myid}">
+            <td th:case="${player.id}">[[${player.name}]]</td>
+            <td th:case="*"><a th:href="@{/wait(id=${player.id})}">[[${player.name}]]</a></td>
+          </th:block>
+        </tr>
+      </div>
+    </table>
+    </p>
 
-  <h2>アクティブな試合</h2>
-  <table border="2">
-    <tr>
-      <th>ID</th>
-      <th>プレイヤー1</th>
-      <th>プレイヤー2</th>
-    </tr>
-    <tbody id="isActive_match_list">
-      <p th:if="${matchList}">
+    <h2>アクティブな試合</h2>
+    <table border="2">
+      <tr>
+        <th>ID</th>
+        <th>プレイヤー1</th>
+        <th>プレイヤー2</th>
+      </tr>
+      <tbody id="isActive_match_list">
+        <p th:if="${matchList}">
+        <div th:each="match:${matchList}">
+          <div th:if="${match.isActive == true}">
+            <tr>
+              <td>[[${match.id}]]</td>
+              <td>[[${match.player1}]]</td>
+              <td>[[${match.player2}]]</td>
+            </tr>
+          </div>
+        </div>
+        </p>
+      </tbody>
+    </table>
+
+    <h2>試合結果</h2>
+    <p th:if="${matchList}">
+    <table border="2">
+      <tr>
+        <th>ID</th>
+        <th>プレイヤー1</th>
+        <th>プレイヤー2</th>
+        <th>勝ち</th>
+      </tr>
       <div th:each="match:${matchList}">
-        <div th:if="${match.isActive == true}">
+        <div th:if="${match.isActive == false}">
           <tr>
             <td>[[${match.id}]]</td>
             <td>[[${match.player1}]]</td>
             <td>[[${match.player2}]]</td>
+            <td>[[${match.winner}]]</td>
           </tr>
         </div>
       </div>
-      </p>
-    </tbody>
-  </table>
-
-
-  <h2>試合結果</h2>
-  <p th:if="${matchList}">
-  <table border="2">
-    <tr>
-      <th>ID</th>
-      <th>プレイヤー1</th>
-      <th>プレイヤー2</th>
-      <th>勝ち</th>
-    </tr>
-    <div th:each="match:${matchList}">
-      <div th:if="${match.isActive == false}">
-        <tr>
-          <td>[[${match.id}]]</td>
-          <td>[[${match.player1}]]</td>
-          <td>[[${match.player2}]]</td>
-          <td>[[${match.winner}]]</td>
-        </tr>
-      </div>
-    </div>
-  </table>
-  </p>
-
+    </table>
+    </p>
+  </div>
 </body>
 
 </html>
