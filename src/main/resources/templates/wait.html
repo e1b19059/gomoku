@@ -6,11 +6,19 @@
   <link rel="icon" th:src="@{favicon.ico}">
   <audio th:src="@{/sound/bgm1.mp3}" autoplay loop></audio>
   <title>WaitingRoom</title>
+  <style>
+    #main {
+      margin-left:auto;
+      margin-right:auto;
+      text-align:left;
+      width:450px;
+    }
+  </style>
   <script>
     window.onload = function () {
       function cancel() {
         //yesならtrue,noならfalseが返ってくる
-        var yn = window.confirm("ゲームの申し込みをキャンセルしますか？");
+        var yn = window.confirm("対戦をキャンセルしますか？");
         if (yn) {
           location.href = "/game1/cancel";
         }
@@ -44,12 +52,12 @@
 </head>
 
 <body>
-
-  <span id="matching">
-    <button id='cancel'> キャンセル </button>
-    <h1>対戦相手を待っています</h1>
-  </span>
-
+  <div id="main">
+    <span id="matching">
+      <button id='cancel'> キャンセル </button>
+      <h1>対戦相手を待っています</h1>
+    </span>
+  </div>
 </body>
 
 </html>
