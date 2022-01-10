@@ -4,7 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <link rel="icon" th:src="@{/favicon.ico}">
-  <audio th:src="@{/sound/bgm2.mp3}" autoplay loop></audio>
+  <audio id="sound" th:src="@{/sound/bgm2.mp3}" autoplay loop></audio>
+  <button id="muted">muted</button>
   <title>START</title>
   <style>
     .btn {
@@ -14,6 +15,12 @@
   </style>
   <script>
     window.onload = function () {
+      const s = document.getElementById('sound');
+      const muted = document.getElementById('muted');
+      s.volume = 0.1;
+      muted.onclick = function () {
+        s.muted = !s.muted;
+      }
       function logout() {
         //yesならtrue,noならfalseが返ってくる
         var yn = window.confirm("本当にログアウトしてよろしいですか？");
