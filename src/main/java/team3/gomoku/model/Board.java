@@ -11,6 +11,7 @@ public class Board {
   int flag = 0;// 石の色
   String winner = "";
   int winner_flag = -1;
+  int cnt = 0;
 
   public Board() {
     this.board = initBoard();
@@ -68,6 +69,7 @@ public class Board {
   }
 
   public void putStone(int col, int row) {
+    this.cnt++;
     if (flag == 0) {
       this.board[col][row] = " ● ";
       this.board_info[col][row] = flag;
@@ -82,6 +84,7 @@ public class Board {
 
   public void initAll() {
     flag = 0;
+    this.cnt=0;
     this.board = initBoard();
     this.board_info = initBoardinfo();
     this.winner = "";
@@ -99,6 +102,14 @@ public class Board {
 
   public int getWinnerFlag() {
     return winner_flag;
+  }
+
+  public void setCnt(int cnt){
+    this.cnt = cnt;
+  }
+
+  public int getCnt() {
+    return cnt;
   }
 
 }

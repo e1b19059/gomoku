@@ -139,25 +139,27 @@ public class GameController {
         break;
       }
     }
-
-    if (flag == 1) {
-      if (this.gomokuBoard.getBoardinfo()[col][row] == 0) {
+    if (flag == 1 ||(flag==0&&this.gomokuBoard.getCnt()==225)) {
+      int result = 0;
+      if(flag==0){
+        winner="引き分け";
+      }else if (this.gomokuBoard.getBoardinfo()[col][row] == 0) {
         winner = "黒の勝利";
+        result = myid;
       } else {
         winner = "白の勝利";
+        result = myid;
       }
       this.gomokuBoard.setWinner(winner);
       this.gomokuBoard.setWinnerFlag(flag);
       model.addAttribute("flag", flag);
       model.addAttribute("winner", winner);
-      // 試合が終わったので、ターンの更新
-      // playerMapper.updateById(myid, false);
-      // playerMapper.updateById(yourid, false);
+
       playerMapper.updatetonull(myid);
       playerMapper.updatetonull(yourid);
       // matchesテーブルの更新
 
-      matchMapper.updatebyplayers(activeMatches.get(0).getPlayer1(),activeMatches.get(0).getPlayer2(), myid);
+      matchMapper.updatebyplayers(activeMatches.get(0).getPlayer1(),activeMatches.get(0).getPlayer2(), result);
       ArrayList<Matchinfo> matchinfoList = matchinfoMapper.selectActiveMatchinfo(true);
       int matchinfo_id = matchinfoList.get(0).getId();
       matchinfoMapper.deleteById(matchinfo_id);
