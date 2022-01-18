@@ -5,14 +5,14 @@
   <meta charset="UTF-8">
   <link rel="icon" th:src="@{favicon.ico}">
   <audio id="sound" th:src="@{/sound/bgm1.mp3}" autoplay loop></audio>
-  <button id="muted">muted</button>
+
   <title>WaitingRoom</title>
   <style>
     #main {
-      margin-left:auto;
-      margin-right:auto;
-      text-align:left;
-      width:450px;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: left;
+      width: 450px;
     }
   </style>
   <script>
@@ -59,17 +59,40 @@
 </head>
 
 <body>
+  <button id="muted">muted</button>
   <div id="main">
     <span id="matching">
       <button id='cancel'> キャンセル </button>
       <h1>対戦相手を待っています</h1>
     </span>
   </div>
+  <img th:src="@{images/vs.png}" alt="vs" class="vs">
 </body>
 
 </html>
 <style>
   body {
     background-color: aqua;
+  }
+
+  h1 {
+    color: firebrick;
+  }
+
+  #muted {
+    background-color: blueviolet;
+    color: #fff;
+  }
+
+  #cancel {
+    background-color: blue;
+    color: #fff;
+  }
+
+  .vs {
+    width: 50%;
+    height: auto;
+    position: absolute;
+    left: 25%;
   }
 </style>
