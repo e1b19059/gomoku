@@ -37,6 +37,10 @@
       padding-top: 90px;
       /* ヘッダーの後ろに要素が隠れないようにするため */
     }
+
+    td,th{
+      border : 1px solid #000000;
+    }
   </style>
   <script>
     window.onload = function () {
@@ -64,7 +68,7 @@
         console.log(matchList);
         var isActive_match_table = "";
         for (var i = 0; i < matchList.length; i++) {
-          var s_tr = "<tr>";
+          var s_tr = "<tr align='center'>";
           var e_tr = "</tr>";
           var m_id = "<td>" + matchList[i].id + "</td>";
           var m_player1 = "<td>" + matchList[i].player1 + "</td>";
@@ -105,13 +109,14 @@
 
     <h2>プレイヤー</h2>
     <p th:if="${playerList}">
+    <p>対戦相手を選んでください</p>
     <table border="2">
-      <tr>
+      <tr align="center">
         <th>ID</th>
         <th>プレイヤー名</th>
       </tr>
       <div th:each="player:${playerList}">
-        <tr>
+        <tr align="center">
           <td>[[${player.id}]]</td>
           <th:block th:switch="${myid}">
             <td th:case="${player.id}">[[${player.name}]]</td>
@@ -124,16 +129,16 @@
 
     <h2>アクティブな試合</h2>
     <table border="2">
-      <tr>
-        <th>ID</th>
-        <th>プレイヤー1</th>
-        <th>プレイヤー2</th>
+      <tr align="center">
+        <th width="10%">ID</th>
+        <th width="40%">申し込んだプレイヤー</th>
+        <th width="40%">申し込まれたプレイヤー</th>
       </tr>
       <tbody id="isActive_match_list">
         <p th:if="${matchList}">
         <div th:each="match:${matchList}">
           <div th:if="${match.isActive == true}">
-            <tr>
+            <tr align="center">
               <td>[[${match.id}]]</td>
               <td>[[${match.player1}]]</td>
               <td>[[${match.player2}]]</td>
@@ -147,15 +152,15 @@
     <h2>試合結果</h2>
     <p th:if="${matchList}">
     <table border="2">
-      <tr>
-        <th>ID</th>
-        <th>プレイヤー1</th>
-        <th>プレイヤー2</th>
-        <th>勝ち</th>
+      <tr align="center">
+        <th width="10%">ID</th>
+        <th width="40%">申し込んだプレイヤー</th>
+        <th width="40%">申し込まれたプレイヤー</th>
+        <th width="10%">勝ち</th>
       </tr>
       <div th:each="match:${matchList}">
         <div th:if="${match.isActive == false}">
-          <tr>
+          <tr align="center">
             <td>[[${match.id}]]</td>
             <td>[[${match.player1}]]</td>
             <td>[[${match.player2}]]</td>
